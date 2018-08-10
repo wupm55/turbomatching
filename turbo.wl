@@ -36,11 +36,37 @@ If[Length[Dimensions[a]]==1,Delete[a,Partition[keysTobeDleted,1]],
 Table[Delete[a[[i]]//Normal,Partition[keysTobeDleted,1]],{i,1,Length[a]}]//Dataset]
 
 
+compareDatasetbyID[ids_List,keys_List, group_:"speed"]:=Module[{datasets,ds,all,selected,n,selectedID},
+datasets=analizeEngineData/@getEngineData/@ids;
+compareDatasetbyID[datasets,ids,keys, group]
+]
+
+compareDatasetbyID[datasets_List,ids_List,keys_List, group_:"speed"]:=Module[{ds,all,selected,selectedID,n},
+n=Length[ids];
+selected=Table[datasets[[i]][All,keys],{i,1,n}];
+ds=Table[addNewColumn[selected[[i]],"id"->ids[[i]]],{i,1,n}];
+all=Normal/@ds//Flatten//Dataset;
+selectedID=all[All,Append[keys,"id"]];
+selectedID[GroupBy[group]]
+]
+
+compareTestsData[ids_List,x_,y_, group_:"speed"]:=Module[{data,all,dd,ds,n=Length[ids]},
+compareDatasetbyID[ids,{x,y},group]
+]
+compareTest[ids_List,x_,y_]:=Module[{results,info},
+results=analizeEngineData/@getEngineData/@ids;
+info=getEngineInfo/@ids;
+{Column[{plotData[results,x,y,ids],info}],compareTestsData[ids,x,y,"speed"]}
+]
+
+easyCompareTests:=Manipulate[compareTest[tests,x,y],{x,resultKeys},{{y,"torque"},DeleteCases[resultKeys,"speed"]},{tests,ListPicker[#1,testList]&,ControlPlacement->Left}
+]
+
 
 (*Plot toolkit*)
-plotDatas[res_List,x_,y_,ids_List,opts:OptionsPattern[]]:=ListLinePlot[Table[res[[i]][All,{x,y}],{i,1,Length[res]}],FilterRules[{opts},Options[ListLinePlot]],ImageSize->Medium,PlotRange->Full,PlotLegends->ids,AxesLabel->{x,y},BaseStyle->{FontSize->12,Bold},GridLines->Automatic,PlotMarkers->Automatic,PlotLabel->(StringTemplate["Compare `1`-`2`" ][x,y])];
-plotDatas[res_,x_,y_,id_,opts:OptionsPattern[]]:=ListLinePlot[res[All,{x,y}],AxesLabel->{x,y},FilterRules[{opts},Options[ListLinePlot]],PlotRange->Full,BaseStyle->{FontSize->12,Bold},GridLines->Automatic,ImageSize->Medium,PlotMarkers->Automatic,PlotLabel->(StringTemplate["`1`-`2` of `3` " ][x,y,id] )];
-plotDatas::usage = "plotDatas[results,x,y,ids,style:] list plot {x,y} of the result dataset ,and use the id as the plot Legend, style is to modify the plot style. ";
+plotData[res_List,x_,y_,ids_List,opts:OptionsPattern[]]:=ListLinePlot[Table[res[[i]][All,{x,y}],{i,1,Length[res]}],FilterRules[{opts},Options[ListLinePlot]],ImageSize->Medium,PlotRange->Full,PlotLegends->ids,AxesLabel->{x,y},BaseStyle->{FontSize->12,Bold},GridLines->Automatic,PlotMarkers->Automatic,PlotLabel->(StringTemplate["Compare `1`-`2`" ][x,y])];
+plotData[res_,x_,y_,id_,opts:OptionsPattern[]]:=ListLinePlot[res[All,{x,y}],AxesLabel->{x,y},FilterRules[{opts},Options[ListLinePlot]],PlotRange->Full,BaseStyle->{FontSize->12,Bold},GridLines->Automatic,ImageSize->Medium,PlotMarkers->Automatic,PlotLabel->(StringTemplate["`1`-`2` of `3` " ][x,y,id] )];
+plotData::usage = "plotData[results,x,y,ids,style:] list plot {x,y} of the result dataset ,and use the id as the plot Legend, style is to modify the plot style. ";
 
 
 
@@ -167,23 +193,21 @@ resultKeys::uasage = "resultKeys returns the titles of the imported analized tes
 
 
 
-
-
-easyCompareEngineTestData:=Manipulate[{plotDatas[analizeEngineData[getEngineData[#]]&/@{testid,testid2},x,y,{testid,testid2},ImageSize->Medium],getEngineInfo[#]&/@{testid,testid2}},{testid,testList,ControlType->PopupMenu},
+easyCompareEngineTestData:=Manipulate[{plotData[analizeEngineData[getEngineData[#]]&/@{testid,testid2},x,y,{testid,testid2},ImageSize->Medium],getEngineInfo[#]&/@{testid,testid2}},{testid,testList,ControlType->PopupMenu},
 {testid2,testList,ControlType->PopupMenu},Delimiter,{x,resultKeys},{{y,"torque"},DeleteCases[resultKeys,"speed"]},ControlPlacement->Left]//Quiet
 easyCompareEngineTestData::usage = "easyCompareEngineTestData is to compare the engine test data";
 
 
-easyPlotAll[testid_List,opts:OptionsPattern[]]:=Table[plotDatas[analizeEngineData[getEngineData[#]]&/@testid,"speed",y,testid,FilterRules[{opts},Options[ListLinePlot]]],
+easyPlotAll[testid_List,opts:OptionsPattern[]]:=Table[plotData[analizeEngineData[getEngineData[#]]&/@testid,"speed",y,testid,FilterRules[{opts},Options[ListLinePlot]]],
 {y,DeleteCases[resultKeys,"speed"]}]
 easyPlotAll[testid_String,opts:OptionsPattern[]]:=easyPlotAll[{testid},opts];
 easyPlotAll::usage = "easyPlotAll[testids] used to compare test data in all parameters";
 
-plotLugLines[testid_List,opts:OptionsPattern[]]:=Table[plotDatas[analizeEngineData[getEngineData[#]]&/@testid,"vred",y,testid,FilterRules[{opts},Options[ListLinePlot]]],
+plotLugLines[testid_List,opts:OptionsPattern[]]:=Table[plotData[analizeEngineData[getEngineData[#]]&/@testid,"vred",y,testid,FilterRules[{opts},Options[ListLinePlot]]],
 {y,{"p2p1","\[Eta]C"}}]
 plotLugLines::usage = "plotLugLines[testids] is to plot a list of tests' luglines for comparision"
 
-plotTLugLines[testid_List,opts:OptionsPattern[]]:=Table[plotDatas[analizeEngineData[getEngineData[#]]&/@testid,"p3p4",y,testid,FilterRules[{opts},Options[ListLinePlot]]],
+plotTLugLines[testid_List,opts:OptionsPattern[]]:=Table[plotData[analizeEngineData[getEngineData[#]]&/@testid,"p3p4",y,testid,FilterRules[{opts},Options[ListLinePlot]]],
 {y,{"mfp","\[Eta]T"}}]
 
 
