@@ -8,6 +8,12 @@ SetDirectory["D:\\wolf\\github\\Github"];
 <<Mongo`
 
 
+
+unit1KeyOfDataset[dataset_,key_,unit_]:=Association/@Thread[key->(dataset[Quantity[#,unit]&,key]//Normal)]//Dataset;
+unitKeysOfDataset[dataset_,key_List,unit_List]:=datasetJoin[Table[unit1KeyOfDataset[dataset,key[[i]],unit[[i]]],{i,1,Length[key]}]];
+
+
+
 (*datasets toolkit*)
 
 findListInAssocialtion[data_Association]:=List/@(Select[Table[{i->(Head[data[[i]]]===List)},{i,1,Length[data]}]//Association,#&]//Keys);
@@ -28,6 +34,7 @@ flattenDataset::usage = "flattenDataset[dataset] make the inside datasets into n
 
 datasetJoin[d1_,d2_]:=Table[Append[d1[[k]],d2[[k]]]//Normal,{k,1,Min[Length[d1],Length[d2]]}]//Dataset
 datasetJoin::usage = "datasetJoin[d1,d2] is connect two dataset";
+datasetJoin[data_List]:=Fold[datasetJoin,data[[1]],data[[2;;-1]]]
 
 datasetConnect[datasets_List]:=Dataset[Normal/@datasets];
 datasetConnect::usage = "datasetConnect[datasets] used to combine of datasets which has same stucture(titles)"
