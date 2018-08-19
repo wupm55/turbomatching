@@ -1,9 +1,15 @@
 (* ::Package:: *)
 
 Needs["MongoLink`"]
-myMongoConnect[]=MongoConnect["mongodb://10.24.4.107:27017"];
+myMongoConnect[]=MongoConnect["mongodb://127.0.0.1:27017"];
 myMongoConnect::usage = "myMongoConnect[] is used to change the host and port, since all mongo db connection use this function to connect, chage this can chage every usage";
 
+getMongoList[dbName_,collectionName_,fieldName_,filter_]:=Module[{client,db,coll},
+client=myMongoConnect[];
+db=client[dbName];
+coll=db[collectionName];
+MongoCollectionDistinct[coll,fieldName,filter]
+]
 getMongoList[dbName_,collectionName_,fieldName_]:=Module[{client,db,coll},
 client=myMongoConnect[];
 db=client[dbName];
