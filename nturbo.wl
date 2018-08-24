@@ -2,7 +2,7 @@
 
 (*mongo toolkit*)
 
-SetDirectory["C:\\Users\\Administrator.BD-20180814WKOT\\Documents\\Wolfram Mathematica"];
+SetDirectory["D:\\wolf\\github\\Github"];
 
 
 <<Mongo`
@@ -288,7 +288,7 @@ plotLugLinesOnMaps::usage="plotLugLinesOnMaps[testids_List,mapids_List] to plot 
 
 plotCMapContour[map_Dataset]:=Module[{data},
 data=map[All,{"Vred","piCts","etaCts"}]//Values;
-ListContourPlot[data,MaxPlotPoints->7,FrameLabel->{"Vred [\!\(\*SuperscriptBox[\(m\), \(3\)]\)/s]","p2p1"},PlotLabel->"Compressor Map \!\(\*SubscriptBox[\(V\), \(red\)]\)-PI",BaseStyle->{FontSize->12,Bold},
+ListContourPlot[data,MaxPlotPoints->7,FrameLabel->{"Vred [\!\(\*SuperscriptBox[\(m\), \(3\)]\)/s]","p2p1"},ImageSize->Medium,Frame->False,Axes->True,AspectRatio->3/4,PlotLabel->"Compressor Map \!\(\*SubscriptBox[\(V\), \(red\)]\)-PI",BaseStyle->{FontSize->12,Bold},
 PerformanceGoal->"Speed",PlotTheme->"Business",PlotLegends->None,InterpolationOrder->3,GridLines->Automatic,ContourStyle->Directive[GrayLevel[0],Opacity[0.5`],Dashed]]
 ]
 
