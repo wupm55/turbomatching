@@ -8,6 +8,12 @@ SetDirectory["D:\\wolf\\github\\Github"];
 <<Mongo`
 
 
+
+unit1KeyOfDataset[dataset_,key_,unit_]:=Association/@Thread[key->(dataset[Quantity[#,unit]&,key]//Normal)]//Dataset;
+unitKeysOfDataset[dataset_,key_List,unit_List]:=datasetJoin[Table[unit1KeyOfDataset[dataset,key[[i]],unit[[i]]],{i,1,Length[key]}]];
+
+
+
 (*datasets toolkit*)
 
 findListInAssocialtion[data_Association]:=List/@(Select[Table[{i->(Head[data[[i]]]===List)},{i,1,Length[data]}]//Association,#&]//Keys);
@@ -28,6 +34,7 @@ flattenDataset::usage = "flattenDataset[dataset] make the inside datasets into n
 
 datasetJoin[d1_,d2_]:=Table[Append[d1[[k]],d2[[k]]]//Normal,{k,1,Min[Length[d1],Length[d2]]}]//Dataset
 datasetJoin::usage = "datasetJoin[d1,d2] is connect two dataset";
+datasetJoin[data_List]:=Fold[datasetJoin,data[[1]],data[[2;;-1]]]
 
 datasetConnect[datasets_List]:=Dataset[Normal/@datasets];
 datasetConnect::usage = "datasetConnect[datasets] used to combine of datasets which has same stucture(titles)"
@@ -41,7 +48,7 @@ v=Values[data]//Normal;
 t=Prepend[v,k];
 f=Export[SystemDialogInput["FileSave"],t];
 Print["File saved in "<>f]
-]
+];
 datasetToExcel::usage = "datasetToExcel[dataset] save in the excel file";
 
 compareDatasets[datasets_List,ids_List,keys_List, group_]:=Module[{ds,all,selected,selectedID,n},
@@ -51,7 +58,7 @@ ds=Table[addNewColumn[selected[[i]],"id"->ids[[i]]],{i,1,n}];
 all=Normal/@ds//Flatten//Dataset;
 selectedID=all[All,Append[keys,"id"]];
 selectedID[GroupBy[group]]
-]
+];
 compareDatasets::usage = "compareDatasets[datasets,ids,keys,group] is used to compare two datasets which has same structure, ans choose keys to comapre,ids is used identify which sets belongs to which id, group to group the data for easy compare"
 
 deleteColumns[a_,keysTobeDleted_List]:=If[Length[Dimensions[a]]==1,Delete[a,Partition[keysTobeDleted,1]],
@@ -85,7 +92,8 @@ pane={plotData[results,x,y,ids],compareTestsData[ids,x,y,"speed"],info}
 compareTest[id_String,x_,y_]:=compareTest[{id},x,y];
 compareTest::usage = "compareTest[testids,x,y,showData:False] to plot the test results of different test id and show the compared data" 
 
-easyCompareTests:=Manipulate[compareTest[tests,x,y],{x,resultKeys,ControlPlacement->Left},{{y,"torque"},DeleteCases[resultKeys,"speed"],ControlPlacement->Left},{tests,ListPicker[#1,testList]&,ControlPlacement->Top}]
+easyCompareTests:=Manipulate[{compareTest[tests,x,y],If[tests!={},Thread[findTestIdPos[tests]->tests],""]},{x,resultKeys,ControlPlacement->Left},{{y,"torque"},DeleteCases[resultKeys,"speed"],ControlPlacement->Left},
+{tests,ListPicker[#1,testList]&,ControlPlacement->Top}]
 
 
 
@@ -102,33 +110,45 @@ label=Column[Table[Style[ps[[i]]["title"],ps[[i]]["style"]],{i,1,Length[ps]}]];
 ListLinePlot[d,PlotStyle->style,PlotRange->All,PlotLegends->Placed[label,Below],BaseStyle->{FontSize->12,Bold},GridLines->Automatic,ImageSize->Medium,Evaluate[FilterRules[{opts},Options[ListLinePlot]]]]
 ]
 
-plotSetsN[ps_List,opts:OptionsPattern[]]:=Module[{dimension,dis,f,style,data,d,d1,d2,lengend,label,nstyle},
-(*dimension is the number of lines of each data has*)
-dimension=Table[If[(Dimensions[ps[[i]]["data"]]//Length)>1, nstyle=1,nstyle=Dimensions[ps[[i]]["data"]][[1]]],{i,1,Length[ps]}];
-dis=Table[Dimensions[ps[[i]]["data"]],{i,1,Length[ps]}];
-f[{x_,y_,z_}]:=x;
-f[{x_,y_}]:=1;
-f[{x_}]:=1;
-nstyle=f/@dis;
-style=Table[Table[ps[[i]]["style"],nstyle[[i]]],{i,1,Length[nstyle]}]//Flatten;
-         data=Table[ps[[i]]["data"],{i,1,Length[ps]}];
-d1=data[[1]];
-d2=data[[2;;-1]];
-d=(AppendTo[d1,#]&/@d2)[[-1]];
-    label=Column[Table[Style[ps[[i]]["title"],ps[[i]]["style"]],{i,1,Length[ps]}]];
-     ListLinePlot[d,PlotStyle->style,PlotRange->All,PlotLegends->Placed[label,Below],BaseStyle->{FontSize->12,Bold},GridLines->Automatic,ImageSize->Medium,Evaluate[FilterRules[{opts},Options[ListLinePlot]]]]
-
-]
 plotSets::usage = "plotSets[ps,style] Plot a list of ps, ps is formatted like <|data->{....},title->\"xxx\", style->Red|>,style is optional";
 
 
 
 
 
+wuBarChart[data_List,legend_List,rowLabel_List,cLabel_List,y_,showrl_:False]:=BarChart[data,ChartLegends->Placed[legend,Below],AxesLabel->{None,y},ChartLabels->{rowLabel,{If[showrl,Placed[cLabel,Center,Rotate[#,90 Degree]&]]}},LabelingFunction->(Placed[Style[NumberForm[#,4],15,Bold],Above]&),ImageSize->Large,BaseStyle->{FontSize->12,Bold}];
+
+barGroupedDataset[di_Dataset,y_,idTitle_String]:=Module[{data,rowLabel,idLegend},
+rowLabel=di[Keys]//Normal;(*get the grouped values*)
+data=Table[di[[i]][All,y]//Normal,{i,1,Length[di]}];
+idLegend=DeleteDuplicates[Normal[Flatten[Values[di]][All,idTitle]]];
+wuBarChart[data,idLegend,rowLabel,idLegend,y]
+]
+
+
+
+barTestData[ids_List,x_,y_,compareWhichSpeed_:""]:=Module[{di,pos,groups,i},
+di=compareTestsData[ids,x,y];
+groups=di[Keys]//Normal;
+pos=Position[groups,#]&/@Flatten[{compareWhichSpeed}];
+pos=Flatten[DeleteCases[pos,{}]]//Sort;
+If[compareWhichSpeed=="",pos=All,];
+If[pos=={},pos=All,];
+di=Take[di,pos];
+barGroupedDataset[di,y,"id"]
+]
+
+
+
+easyBarTests:=Manipulate[barTestData[tests,x,y,g],{x,resultKeys,ControlPlacement->Left},{{y,"torque"},DeleteCases[resultKeys,"speed"],ControlPlacement->Left},{g,InputField,ControlPlacement->Left},
+{tests,ListPicker[#,testList]&,ControlPlacement->Top}]
+
+
 (*engine test*)
 testList:=getMongoList["turbo","engineTest","testID"]
 testList::usage = "testList list all test ids in the database";
-
+findTestIdPos[name_]:=Extract[Flatten[Position[testList,name]],1];
+findTestIdPos[names_List]:=findTestIdPos/@names;
 getEngineInfo[id_]:=Module[{info,dataset},
 info=getMongoOneData["turbo","engineTest",{"testID"->id},{"data"},False];
 dataset=MapAt[Dataset,info,Key["turboConfig"]]//Dataset;
@@ -182,10 +202,10 @@ analizeEngineData::usage = "analizeEngineData[id] return the analized engine dat
 
 resultToInput[result_]:=datasetJoin[Table["op"->j//Association,{j,1,5}]//Dataset,result[All,{"speed","torque","be","\[Lambda]","veff","p0","dpAF","dpCooler","dpEx","t1","t2ac","t3"}]];
 resultToInput::usage = "resultToInput[result] in to matching input format";
-engineDataKeys=getEngineData[testList[[1]]][[1]]//Keys//Normal;
+engineDataKeys=Extract[getEngineData[testList[[1]]],1]//Keys//Normal;
 engineDataKeys::uasage = "engineDataKeys returns the titles of the imported engine test data" ;
 
-resultKeys=(getEngineData[testList[[1]]]//analizeEngineData//Keys)[[1]]//Normal;
+resultKeys=Extract[(getEngineData[testList[[1]]]//analizeEngineData//Keys),1]//Normal;
 resultKeys::uasage = "resultKeys returns the titles of the imported analized test data" ;
 
 
@@ -288,7 +308,7 @@ plotLugLinesOnMaps::usage="plotLugLinesOnMaps[testids_List,mapids_List] to plot 
 
 plotCMapContour[map_Dataset]:=Module[{data},
 data=map[All,{"Vred","piCts","etaCts"}]//Values;
-ListContourPlot[data,MaxPlotPoints->7,FrameLabel->{"Vred [\!\(\*SuperscriptBox[\(m\), \(3\)]\)/s]","p2p1"},ImageSize->Medium,Frame->False,Axes->True,AspectRatio->3/4,PlotLabel->"Compressor Map \!\(\*SubscriptBox[\(V\), \(red\)]\)-PI",BaseStyle->{FontSize->12,Bold},
+ListContourPlot[data,MaxPlotPoints->7,FrameLabel->{"Vred [\!\(\*SuperscriptBox[\(m\), \(3\)]\)/s]","p2p1"},PlotLabel->"Compressor Map \!\(\*SubscriptBox[\(V\), \(red\)]\)-PI",BaseStyle->{FontSize->12,Bold},
 PerformanceGoal->"Speed",PlotTheme->"Business",PlotLegends->None,InterpolationOrder->3,GridLines->Automatic,ContourStyle->Directive[GrayLevel[0],Opacity[0.5`],Dashed]]
 ]
 
