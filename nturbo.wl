@@ -92,7 +92,7 @@ pane={plotData[results,x,y,ids],compareTestsData[ids,x,y,"speed"],info}
 compareTest[id_String,x_,y_]:=compareTest[{id},x,y];
 compareTest::usage = "compareTest[testids,x,y,showData:False] to plot the test results of different test id and show the compared data" 
 
-easyCompareTests:=Manipulate[{compareTest[tests,x,y],If[tests!={},Thread[findTestIdPos[tests]->tests],""]},{x,resultKeys,ControlPlacement->Left},{{y,"torque"},DeleteCases[resultKeys,"speed"],ControlPlacement->Left},
+easyCompareTests:=Manipulate[{compareTest[tests,x,y],If[tests!={},Thread[findIdPos[tests,testList]->tests],""]},{x,resultKeys,ControlPlacement->Left},{{y,"torque"},DeleteCases[resultKeys,"speed"],ControlPlacement->Left},
 {tests,ListPicker[#1,testList]&,ControlPlacement->Top}]
 
 
@@ -147,8 +147,12 @@ easyBarTests:=Manipulate[barTestData[tests,x,y,g],{x,resultKeys,ControlPlacement
 (*engine test*)
 testList:=getMongoList["turbo","engineTest","testID"]
 testList::usage = "testList list all test ids in the database";
-findTestIdPos[name_]:=Extract[Flatten[Position[testList,name]],1];
-findTestIdPos[names_List]:=findTestIdPos/@names;
+
+
+findIdPos[name_,list_List]:=Flatten[Position[list,name]];
+findIdPos[names_List,list_List]:=findIdPos[#,list]&/@names;
+
+
 getEngineInfo[id_]:=Module[{info,dataset},
 info=getMongoOneData["turbo","engineTest",{"testID"->id},{"data"},False];
 dataset=MapAt[Dataset,info,Key["turboConfig"]]//Dataset;
@@ -309,7 +313,7 @@ plotLugLinesOnMaps::usage="plotLugLinesOnMaps[testids_List,mapids_List] to plot 
 plotCMapContour[map_Dataset]:=Module[{data},
 data=map[All,{"Vred","piCts","etaCts"}]//Values;
 ListContourPlot[data,MaxPlotPoints->7,FrameLabel->{"Vred [\!\(\*SuperscriptBox[\(m\), \(3\)]\)/s]","p2p1"},PlotLabel->"Compressor Map \!\(\*SubscriptBox[\(V\), \(red\)]\)-PI",BaseStyle->{FontSize->12,Bold},
-PerformanceGoal->"Speed",PlotTheme->"Business",PlotLegends->None,InterpolationOrder->3,GridLines->Automatic,ContourStyle->Directive[GrayLevel[0],Opacity[0.5`],Dashed]]
+PerformanceGoal->"Speed",AspectRatio->3/4,PlotTheme->"Business",PlotLegends->None,InterpolationOrder->3,GridLines->Automatic,ContourStyle->Directive[GrayLevel[0],Opacity[0.5`],Dashed]]
 ]
 
 easyTestOnMap=Manipulate[plotLugLinesOnMaps[tests,maps,showContour],{{showContour,True,"Show Contour"},{True,False},ControlPlacement->Top},{tests,ListPicker[#1,testList]&,ControlPlacement->Left},{maps,ListPicker[#1,mapList]&},ControlPlacement->Left];
@@ -413,7 +417,7 @@ OpenerView[{TabView[{"Compressor Map"->Extract[cmap,1],
 "Turbine Map"->Extract[tmap,1]}],
 Extract[tmap,2]}]
 ]
-easyMaps:=Manipulate[Column[{id,plotMaps[id,showContour]}],{id,ListPicker[#,mapList]&},{{showContour,False,"show contour"},{True,False}},ControlPlacement->Left]
+easyMaps:=Manipulate[Column[{Thread[findIdPos[id,mapList]->id],plotMaps[id,showContour]}],{id,ListPicker[#,mapList]&},{{showContour,False,"show contour"},{True,False}},ControlPlacement->Left]
 
 
 
