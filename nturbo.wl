@@ -2,24 +2,19 @@
 
 (*mongo toolkit*)
 
-SetDirectory["D:\\wolf\\github\\Github"];
+SetDirectory["E:\\Github"];
 
 
 <<Mongo`
+datasetJoin[d1_,d2_]:=Table[Append[d1[[k]],d2[[k]]]//Normal,{k,1,Min[Length[d1],Length[d2]]}]//Dataset
+datasetJoin::usage = "datasetJoin[d1,d2] is connect two dataset";
+datasetJoin[data_List]:=Fold[datasetJoin,data[[1]],data[[2;;-1]]]
 
+datasetConnect[datasets_List]:=Dataset[Normal/@datasets];
+datasetConnect::usage = "datasetConnect[datasets] used to combine of datasets which has same stucture(titles)"
 
-
-unit1KeyOfDataset[dataset_,key_,unit_]:=Association/@Thread[key->(dataset[Quantity[#,unit]&,key]//Normal)]//Dataset;
-unitKeysOfDataset[dataset_,key_List,unit_List]:=datasetJoin[Table[unit1KeyOfDataset[dataset,key[[i]],unit[[i]]],{i,1,Length[key]}]];
-
-
-
-(*datasets toolkit*)
-
-findListInAssocialtion[data_Association]:=List/@(Select[Table[{i->(Head[data[[i]]]===List)},{i,1,Length[data]}]//Association,#&]//Keys);
-findDatasetInAssocialtion[data_Association]:=List/@(Select[Table[{i->(Head[data[[i]]]===Dataset)},{i,1,Length[data]}]//Association,#&]//Keys);
-associateListInAssociation[data_]:=MapAt[Association/@#&,data,findListInAssocialtion[data]]
-
+addNewColumn[da_Dataset,item_Rule]:=Table[Append[da[[i]]//Normal,item],{i,1,Length[da]}]//Dataset
+addNewColumn::usage = "addNewColumn[dataset,item] add a new key->value to each row of the dataset";
 flattenDataset[dataset_Dataset]:=Module[{info,pos,normalParts,subPartsKey,subParts,f},
 info=dataset//Normal;
 pos=findDatasetInAssocialtion[info];
@@ -32,15 +27,19 @@ Normal/@{normalParts,subParts}//Flatten//Association//Dataset
 ]
 flattenDataset::usage = "flattenDataset[dataset] make the inside datasets into normal datasets"
 
-datasetJoin[d1_,d2_]:=Table[Append[d1[[k]],d2[[k]]]//Normal,{k,1,Min[Length[d1],Length[d2]]}]//Dataset
-datasetJoin::usage = "datasetJoin[d1,d2] is connect two dataset";
-datasetJoin[data_List]:=Fold[datasetJoin,data[[1]],data[[2;;-1]]]
+findListInAssocialtion[data_Association]:=List/@(Select[Table[{i->(Head[data[[i]]]===List)},{i,1,Length[data]}]//Association,#&]//Keys);
+findDatasetInAssocialtion[data_Association]:=List/@(Select[Table[{i->(Head[data[[i]]]===Dataset)},{i,1,Length[data]}]//Association,#&]//Keys);
+associateListInAssociation[data_]:=MapAt[Association/@#&,data,findListInAssocialtion[data]];
 
-datasetConnect[datasets_List]:=Dataset[Normal/@datasets];
-datasetConnect::usage = "datasetConnect[datasets] used to combine of datasets which has same stucture(titles)"
 
-addNewColumn[da_Dataset,item_Rule]:=Table[Append[da[[i]]//Normal,item],{i,1,Length[da]}]//Dataset
-addNewColumn::usage = "addNewColumn[dataset,item] add a new key->value to each row of the dataset";
+
+
+findIdPos[name_,list_]:=Flatten[Position[list,name]];
+findIdPos[names_List,list_List]:=findIdPos[#,list]&/@names;
+
+
+
+(*datasets toolkit*)
 
 datasetToExcel[data_]:=Module[{k,v,t,f},
 k=Keys[data][[1]]//Normal;
@@ -65,6 +64,8 @@ deleteColumns[a_,keysTobeDleted_List]:=If[Length[Dimensions[a]]==1,Delete[a,Part
 Table[Delete[a[[i]]//Normal,Partition[keysTobeDleted,1]],{i,1,Length[a]}]//Dataset]
 deleteColumns::usage = "deleteColumns[dataset, keysTobeDelete] used delete the  columns of a Dataset or an Association, specified by the kes";
 
+unit1KeyOfDataset[dataset_,key_,unit_]:=Association/@Thread[key->(dataset[Quantity[#,unit]&,key]//Normal)]//Dataset;
+unitKeysOfDataset[dataset_,key_List,unit_List]:=datasetJoin[Table[unit1KeyOfDataset[dataset,key[[i]],unit[[i]]],{i,1,Length[key]}]];
 
 
 
@@ -132,8 +133,8 @@ di=compareTestsData[ids,x,y];
 groups=di[Keys]//Normal;
 pos=Position[groups,#]&/@Flatten[{compareWhichSpeed}];
 pos=Flatten[DeleteCases[pos,{}]]//Sort;
-If[compareWhichSpeed=="",pos=All,];
-If[pos=={},pos=All,];
+If[compareWhichSpeed=="",pos=All];
+If[pos=={},pos=All];
 di=Take[di,pos];
 barGroupedDataset[di,y,"id"]
 ]
@@ -147,11 +148,6 @@ easyBarTests:=Manipulate[barTestData[tests,x,y,g],{x,resultKeys,ControlPlacement
 (*engine test*)
 testList:=getMongoList["turbo","engineTest","testID"]
 testList::usage = "testList list all test ids in the database";
-
-
-findIdPos[name_,list_List]:=Flatten[Position[list,name]];
-findIdPos[names_List,list_List]:=findIdPos[#,list]&/@names;
-
 
 getEngineInfo[id_]:=Module[{info,dataset},
 info=getMongoOneData["turbo","engineTest",{"testID"->id},{"data"},False];
@@ -188,7 +184,7 @@ t["p3"]=If[#p3==0,(#"p3s1"+#"p3s2")/2,#p3]+#p0&;
 t["t3"]=If[#t3==0,(#"t3s1"+#"t3s2")/2,#t3]&; 
 t["p4"]=(#p0+#p4)&;
 t["p3p4"]=(If[#p3==0,(#"p3s1"+#"p3s2")/2,#p3]+#p0)/(#p0+#p4)&;
-d[All,<|"speed"->"speed","torque"->"torque","power"->"power","be"->t["be"],"\[Lambda]"->(#mL/#mb/14.7&),"airFuelRatio"->t["af"],"veff"->t["ve"],"dpAF"->(-#dpfilter&),"dpCooler"->(#dp2bc-#dp2ac&),"dpEx"->"p4","p0"->"p0","p1"->(#p0+#dpfilter&),"p2bc"->(#dp2bc+#p0&),"p2ac"->(#dp2ac+#p0&),"p3"->t["p3"],"p4"->(#p4+#p0&),"t1"->"t1","t2bc"->"t2bc","t2ac"->"t2ac","t3"->t["t3"],"t4"->"t4","p2p1"->t["p2p1"],"vred"->t["vred"],"p3p4"->t["p3p4"],"mL"->"mL","mb"->"mb","mT"->(#mL+#mb&)|> ]
+d[All,<|"speed"->"speed","torque"->"torque","power"->"power","be"->t["be"],"\[Lambda]"->(#mL/#mb/14.7&),"airFuelRatio"->t["af"],"veff"->t["ve"],"dpAF"->(Abs[#dpfilter]&),"dpCooler"->(#dp2bc-#dp2ac&),"dpEx"->"p4","p0"->"p0","p1"->(#p0+#dpfilter&),"p2bc"->(#dp2bc+#p0&),"p2ac"->(#dp2ac+#p0&),"p3"->t["p3"],"p4"->(#p4+#p0&),"t1"->"t1","t2bc"->"t2bc","t2ac"->"t2ac","t3"->t["t3"],"t4"->"t4","p2p1"->t["p2p1"],"vred"->t["vred"],"p3p4"->t["p3p4"],"mL"->"mL","mb"->"mb","mT"->(#mL+#mb&),"vh"->"VH"|> ]
 ];
 analizeEngineData[d_]:=Module[{etaC,etaT,mfp,Cpair=1.006,CpT=1.135,k=1.4,\[Gamma]=1.33,temp,temp2,powerC,powerCReal,powerT,etaTByPower},
 (*cpair=1.006kJ/kgK ;  cpT=1.135kJ/kgK kAir=1.4; kExhaust=1.36   *)
@@ -204,7 +200,7 @@ datasetJoin[temp,temp2]
 ]
 analizeEngineData::usage = "analizeEngineData[id] return the analized engine data";
 
-resultToInput[result_]:=datasetJoin[Table["op"->j//Association,{j,1,5}]//Dataset,result[All,{"speed","torque","be","\[Lambda]","veff","p0","dpAF","dpCooler","dpEx","t1","t2ac","t3"}]];
+resultToInput[result_]:=datasetJoin[Table["op"->j//Association,{j,1,Length[result]}]//Dataset,result[All,{"speed","torque","be","\[Lambda]","veff","p0","dpAF","dpCooler","dpEx","t1","t2ac","t3","vh"}]];
 resultToInput::usage = "resultToInput[result] in to matching input format";
 engineDataKeys=Extract[getEngineData[testList[[1]]],1]//Keys//Normal;
 engineDataKeys::uasage = "engineDataKeys returns the titles of the imported engine test data" ;
@@ -247,26 +243,28 @@ map=getMapData[id];
 pressLine=Table[map[Select[#KL==i&]][SortBy["MP"]][All,{#Vred,#piCtt}&]//Normal,{i,Min[map[All,"KL"]],Max[map[All,"KL"]]}];
 etaLine=Table[map[Select[#KL==i&]][SortBy["MP"]][All,{#Vred,#etaCtt}&]//Normal,{i,Min[map[All,"KL"]],Max[map[All,"KL"]]}];
 surgeLine={map[Select[#MP==1&]][SortBy["KL"]][All,{#Vred,#piCtt}&]//Normal};
-nred=Round[map[Select[#MP==3&]][SortBy["KL"]][All,"nred"]//Normal];
-uredC=map[Select[#MP==3&]][SortBy["KL"]][All,"uredC"]//Normal;
+nred=(First/@Values[map[GroupBy["KL"]]])[All,"nred"]//Normal;
+uredC=(First/@Values[map[GroupBy["KL"]]])[All,"uredC"]//Normal;
 tip=StringTemplate["`1`[rpm]=`2`[m/s]"]@@@Transpose[{nred,uredC}];
 pressLine=DeleteCases[pressLine,{}];
 etaLine=DeleteCases[etaLine,{}];
-pressLineSpeed=Tooltip@@@Transpose[{pressLine,tip}];
+{pressLine,tip}
+(*pressLineSpeed=Tooltip@@@Transpose[{pressLine,tip}];
+
 etaLineSpeed=Tooltip@@@Transpose[{etaLine,tip}];
 d2=StringTemplate["d2: `` mm"][map[[1]]["d2"]];
 <|"pr"-><|"data"->pressLineSpeed,"title"->id,"style"->style|>,
 "eta"-><|"data"->etaLineSpeed,"title"->id,"style"->style|>,
 "surge"-><|"data"->surgeLine,"title"->d2,"style"->{Dashed,style}|>
-|>
+|>*)
 ]
 
 getCMapPlotData[map_Dataset,id_String,style_]:=Module[{pressLine,etaLine,surgeLine,nred,uredC,pressLineSpeed,etaLineSpeed,tip,d2,surge,pr,eta},
 pressLine=Table[map[Select[#KL==i&]][SortBy["MP"]][All,{#Vred,#piCtt}&]//Normal,{i,Min[map[All,"KL"]],Max[map[All,"KL"]]}];
 etaLine=Table[map[Select[#KL==i&]][SortBy["MP"]][All,{#Vred,#etaCtt}&]//Normal,{i,Min[map[All,"KL"]],Max[map[All,"KL"]]}];
 surgeLine={map[Select[#MP==1&]][SortBy["KL"]][All,{#Vred,#piCtt}&]//Normal};
-nred=Round[map[Select[#MP==3&]][SortBy["KL"]][All,"nred"]//Normal];
-uredC=map[Select[#MP==3&]][SortBy["KL"]][All,"uredC"]//Normal;
+nred=(First/@Values[map[GroupBy["KL"]]])[All,"nred"]//Normal;
+uredC=(First/@Values[map[GroupBy["KL"]]])[All,"uredC"]//Normal;
 pressLine=DeleteCases[pressLine,{}];
 etaLine=DeleteCases[etaLine,{}];
 tip=StringTemplate["`1`[rpm]=`2`[m/s]"]@@@Transpose[{nred,uredC}];
@@ -313,7 +311,7 @@ plotLugLinesOnMaps::usage="plotLugLinesOnMaps[testids_List,mapids_List] to plot 
 plotCMapContour[map_Dataset]:=Module[{data},
 data=map[All,{"Vred","piCts","etaCts"}]//Values;
 ListContourPlot[data,MaxPlotPoints->7,FrameLabel->{"Vred [\!\(\*SuperscriptBox[\(m\), \(3\)]\)/s]","p2p1"},PlotLabel->"Compressor Map \!\(\*SubscriptBox[\(V\), \(red\)]\)-PI",BaseStyle->{FontSize->12,Bold},
-PerformanceGoal->"Speed",AspectRatio->3/4,PlotTheme->"Business",PlotLegends->None,InterpolationOrder->3,GridLines->Automatic,ContourStyle->Directive[GrayLevel[0],Opacity[0.5`],Dashed]]
+PerformanceGoal->"Speed",PlotTheme->"Business",PlotLegends->None,InterpolationOrder->3,GridLines->Automatic,ContourStyle->Directive[GrayLevel[0],Opacity[0.5`],Dashed]]
 ]
 
 easyTestOnMap=Manipulate[plotLugLinesOnMaps[tests,maps,showContour],{{showContour,True,"Show Contour"},{True,False},ControlPlacement->Top},{tests,ListPicker[#1,testList]&,ControlPlacement->Left},{maps,ListPicker[#1,mapList]&},ControlPlacement->Left];
@@ -335,9 +333,9 @@ id]
 ]
 
 getMapData[id_]:=Module[{titles,client,coll,curs,all,rawMap,map},
-titles={"Line_Point_No","Line_No","n_cor_C","u_cor_C","u_cor_T","V_dot_Tcor_C","m_dot_Tcor_C","pi_st_C","pi_tt_C","eta_ad_tt_C","eta_ad_st_C","d_C","d_T","n_t_tv","pi_ts_T","pi_tt_T","MFP_T","m_dot_T","eta_tot_ts_T","eta_tot_tt_T"};
+titles={"Line_Point_No","Line_No","n_cor_C_tv","u_cor_C_tv","u_cor_T","V_dot_Tcor_C","m_dot_Tcor_C","pi_st_C","pi_tt_C","eta_ad_tt_C","eta_ad_st_C","d_C","d_T","n_t_tv","pi_ts_T","pi_tt_T","MFP_T","m_dot_T","eta_tot_ts_T","eta_tot_tt_T"};
 rawMap=getMongoManyData["turbo","map",{"Test_Number"->id},StringJoin["data.",#]&/@titles]//Values//Normal//Flatten//Dataset;
-map=rawMap[All,<|"MP"->"Line_Point_No","KL"->"Line_No","nred"->"n_t_tv","uredC"->"u_cor_C","Vred"->"V_dot_Tcor_C","m"->"m_dot_Tcor_C","piCtt"->"pi_tt_C",
+map=rawMap[All,<|"MP"->"Line_Point_No","KL"->"Line_No","nred"->"n_cor_C_tv","uredC"->"u_cor_C_tv","Vred"->"V_dot_Tcor_C","m"->"m_dot_Tcor_C","piCtt"->"pi_tt_C",
 "etaCtt"->"eta_ad_tt_C","piCts"->"pi_st_C","etaCts"->"eta_ad_st_C","d2"->"d_C","d5"->"d_T",
 "uredT"->"u_cor_T","piTts"->"pi_ts_T","piTtt"->"pi_tt_T","MFP"->"MFP_T","mT"->"m_dot_T","etaTts"->"eta_tot_ts_T","etaTtt"->"eta_tot_tt_T"
 |>];
@@ -361,7 +359,7 @@ cmapLine= plotSets[Flatten[Table[{maps[[i]]["pr"],maps[[i]]["surge"]},{i,1,n}],1
 contour=Show[Table[plotCMapContour[mapdatas[[i]]],{i,1,n}]];
 cmapEta= plotSets[Table[maps[[i]]["eta"],{i,1,n}],AxesLabel->{"Vred","\!\(\*SubscriptBox[\(\[Eta]\), \(c\)]\)"},PlotLabel->"Compressor Map \!\(\*SubscriptBox[\(V\), \(red\)]\)-\!\(\*SubscriptBox[\(\[Eta]\), \(c\)]\)",opt];
 
-{{If[showContour,Show[contour,cmapLine,opt],cmapLine],cmapEta[[1]]}//Row,
+{{If[TrueQ[showContour],Show[contour,cmapLine,opt],cmapLine],cmapEta[[1]]}//Row,
 	datasetConnect[getMapInfo/@ids]
 	}
 
@@ -374,8 +372,8 @@ plotCMaps[id_String,showContour_,opt:OptionsPattern[]]:=plotCMaps[{id},showConto
 getTMapPlotData[map_Dataset,id_String,style_:Magenta]:=Module[{pressLine,etaLine,surgeLine,nred,uredT,pressLineSpeed,etaLineSpeed,tip,d5,pr,eta},
 pressLine=Table[map[Select[#KL==i&]][SortBy["MP"]][All,{#piTtt,#MFP}&]//Normal,{i,Min[map[All,"KL"]],Max[map[All,"KL"]]}];
 etaLine=Table[map[Select[#KL==i&]][SortBy["MP"]][All,{#piTtt,#etaTtt}&]//Normal,{i,Min[map[All,"KL"]],Max[map[All,"KL"]]}];
-nred=Round[map[Select[#MP==3&]][SortBy["KL"]][All,"nred"]//Normal];
-uredT=Round[map[Select[#MP==3&]][SortBy["KL"]][All,"uredT"]//Normal];
+nred=(First/@Values[map[GroupBy["KL"]]])[All,"nred"]//Normal;
+uredT=(First/@Values[map[GroupBy["KL"]]])[All,"uredT"]//Normal;
 pressLine=DeleteCases[pressLine,{}];
 etaLine=DeleteCases[etaLine,{}];
 tip=StringTemplate["`1`[rpm]=`2`[m/s]"]@@@Transpose[{nred,uredT}];
@@ -413,10 +411,11 @@ plotMaps[id_String,showContour_,opt:OptionsPattern[]]:=plotMaps[{id},showContour
 plotMaps[id_List,showContour_,opt:OptionsPattern[]]:=Module[{cmap,tmap},
 cmap=plotCMaps[id,showContour,opt][[1]];
 tmap=plotTMaps[id,opt][[1]];
-OpenerView[{TabView[{"Compressor Map"->Extract[cmap,1],
+{TabView[{"Compressor Map"->Extract[cmap,1],
 "Turbine Map"->Extract[tmap,1]}],
-Extract[tmap,2]}]
+Extract[tmap,2]}
 ]
+
 easyMaps:=Manipulate[Column[{Thread[findIdPos[id,mapList]->id],plotMaps[id,showContour]}],{id,ListPicker[#,mapList]&},{{showContour,False,"show contour"},{True,False}},ControlPlacement->Left]
 
 
@@ -425,3 +424,10 @@ easyMaps:=Manipulate[Column[{Thread[findIdPos[id,mapList]->id],plotMaps[id,showC
 
 (* ::InheritFromParent:: *)
 (**)
+
+
+testToInput[testid_]:=getEngineData[testid]//analizeEngineData//resultToInput;
+inputToMongo[testid_]:=Module[{as},
+as=<|"_id"->testid,"input"->Normal[testToInput[testid]]|>;
+associationToMongo["turbo","matching",as]
+];

@@ -1,0 +1,1151 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     50274,       1141]
+NotebookOptionsPosition[     48627,       1107]
+NotebookOutlinePosition[     48971,       1122]
+CellTagsIndexPosition[     48928,       1119]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"opi", "=", 
+  RowBox[{"turboBoundary", "@@@"}]}]], "Input",
+ CellChangeTimes->{{3.7451224879444714`*^9, 3.7451224882824907`*^9}, {
+   3.7451226577561836`*^9, 3.7451226775103135`*^9}, {3.74512272045177*^9, 
+   3.745122768037492*^9}, {3.7451228302570505`*^9, 3.7451228409606624`*^9}, 
+   3.7451249296431284`*^9},ExpressionUUID->"d2f14c6c-c8b2-428a-aa8b-\
+61cb21a4d5ee"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"cr", "=", 
+   RowBox[{"compressorRequirement", "/@", "opi"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.745122854569441*^9, 3.7451229073984623`*^9}, 
+   3.745124750438878*^9},
+ CellLabel->
+  "In[181]:=",ExpressionUUID->"2b9a2426-6ee1-4d31-8ef4-b35fd9d8ee86"],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.74512303463174*^9, 3.745123242828648*^9}, {
+  3.745123277181613*^9, 3.745123277354623*^9}, {3.7451243941575003`*^9, 
+  3.7451244219260883`*^9}},ExpressionUUID->"bcf5ecb4-1fbb-4156-aecd-\
+2875a0c31128"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"etacs", "=", 
+  RowBox[{"readMapEtaV", "[", 
+   RowBox[{"cr", ",", 
+    RowBox[{"mapList", "[", 
+     RowBox[{"[", "6", "]"}], "]"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.7451232000041986`*^9, 3.745123210809817*^9}, {
+  3.7451232690321465`*^9, 3.74512328273293*^9}, {3.7451233685478387`*^9, 
+  3.7451233722000475`*^9}},
+ CellLabel->
+  "In[188]:=",ExpressionUUID->"0c1b7db9-6747-4871-961d-2ac737ba4313"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0.6994015654246737`", ",", "0.7077770099586611`"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.745123211482855*^9, 3.7451232832409596`*^9}, 
+   3.745123378766423*^9},
+ CellLabel->
+  "Out[188]=",ExpressionUUID->"6df75034-c971-4143-9b85-f80f8430fed6"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"tr", "=", 
+   RowBox[{"turbineRequirement", "@@@", 
+    RowBox[{"Transpose", "[", 
+     RowBox[{"{", 
+      RowBox[{"cr", ",", "etacs"}], "}"}], "]"}]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.7451233079383717`*^9, 3.745123414535469*^9}},
+ CellLabel->
+  "In[190]:=",ExpressionUUID->"856e6849-ef5e-4201-a660-38b38d6007e6"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"etats", "=", 
+  RowBox[{"{", 
+   RowBox[{"0.65", ",", "0.68"}], "}"}]}], "\[IndentingNewLine]", 
+ RowBox[{"wgs", "=", 
+  RowBox[{"{", 
+   RowBox[{"0", ",", "0.1"}], "}"}]}]}], "Input",
+ CellChangeTimes->{{3.745123442437065*^9, 3.7451234916518803`*^9}, {
+  3.745123599237034*^9, 3.7451236079405313`*^9}},
+ CellLabel->
+  "In[192]:=",ExpressionUUID->"86d85334-d8ab-4db3-8e05-b72149ec295e"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0.65`", ",", "0.68`"}], "}"}]], "Output",
+ CellChangeTimes->{3.745123492054903*^9, 3.745123610973705*^9},
+ CellLabel->
+  "Out[192]=",ExpressionUUID->"ca04ffdf-2b68-44e0-8ded-1a194278d1c7"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0", ",", "0.1`"}], "}"}]], "Output",
+ CellChangeTimes->{3.745123492054903*^9, 3.7451236109767046`*^9},
+ CellLabel->
+  "Out[193]=",ExpressionUUID->"beaa7d3f-8ddb-4f4a-9c22-d3100302497d"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"tt", "=", 
+   RowBox[{"turbineTuning", "@@@", 
+    RowBox[{"Transpose", "[", 
+     RowBox[{"{", 
+      RowBox[{"tr", ",", "wgs", ",", "etats"}], "}"}], "]"}]}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.745123545020932*^9, 3.745123625189518*^9}, {
+  3.7451248315085154`*^9, 3.745124831681525*^9}},
+ CellLabel->
+  "In[206]:=",ExpressionUUID->"fa8e1862-9708-4186-8217-4971213d42e2"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"matchingCompressor", "[", 
+  RowBox[{"tt", ",", 
+   RowBox[{"mapList", "[", 
+    RowBox[{"[", "6", "]"}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.745123640422389*^9, 3.7451236523680725`*^9}},
+ CellLabel->
+  "In[207]:=",ExpressionUUID->"a05fa585-c0f1-4675-aad8-a13d447ba74f"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   TemplateBox[{GraphicsBox[{{{
+         GraphicsComplexBox[CompressedData["
+1:eJxl1Xs0lGkcB/AZ5DaVtIuGkFa1ETNFdsX6PenGlsuybXI2OUhJNZzGvRSi
+dkI4IxHrMo3cEmMsGZepVVvIoUVrymKO28mOE3NRlN32nN7HH/PHe97zOb/3
+/Z73vO/3eR+zAIbXCRUSiRT56fj/TB/4hi6Pz4LE9yaCoMV5IBtmXW41LMa2
+ZbWR+r0ql30xUhjxmIe9KfHgaYZuA/YuKu3teG8emB9FTl66S/h+7M/3E3bf
+mUZKGG3AtmsKY5jcaMW+MznEPpNVDIGva0YKv1BBRB725zzCRB7hUxIOSv3Y
+jL1eJPLNVgixA8vlTsO9XLBN3V1y02QFziNM5BEm8gjzLQ34wy5CbJp7iG/S
+hgpY4fgiMG2rJs4jTOQRLumS9p+mtCnNq6XWFms3UhDxPZqiiwptX83h9/k3
+e6bTVlW6/D2eOe6IL5ED8XyxDd5v7jE/4Dl78stt1nPaqHLLSPt3fDZsZYYn
+zsulUGYfk5nsVwJ7XRzeHSidgwE/ysJEQTV0WahcvvpKClde8buje9vgGtOv
+nfdcHRmQdwcMAg98ZBpiV4k2Uj/XISsaFwCr2KO5N+1TvmSVyDrgBmxQVOQN
++MmApTOlE7cghJkBtetSFhkFj+n2cFSycV8U5JzxLI88bJbp+sWE/ELskFDT
+HRmbqrFpL923fP/rb9i8KFm6OKUOe+8RrTANTgFM88djgtoWIYqmZrzPtwiS
+XZm3wr59D9Xsk3RnGgf3q/Vrkuh6TLlSP0eOl/qeFS8Ae39kYbNpA7BcjznH
+Br+DQqcPJzQTG8DzlGZpzP5FUK11tCyvX+5vmbEx5Z3xcn/vc+0DqLImbLee
+qrXq7Rzcvx9WmTjX9JUr9flAr861ImsS8mauixP61yr1u6DWz+ZK+BK4wtHI
+lFg+nnsOdOttDm+FFHvmw5zkJTjSMuXJyWuBuf641ZNiEnIf4VpGrBTg60Mc
+gsyjzNuw48t8mjYnl0LC2d13owVqaMH4q33y4xWQOeRZPJG7/HypI556Eg01
+RD+/+rSpw13c//djoJ/+b7XS+nls1LUuY0EV9ZmUd7uc4CutJxiUt557qoJI
+9vLsNJ4Az3MNRYx/koWgmRM7+mKlGprgGrD7DrUprdc5Owqjp1EDcaxm40K7
+qpTWk7+INzF6Uh1Z+VQ72b2sw3MFqSr+mWU21HQOUzKoMjD/y6XRbOoWqN0a
+v+dlJweP++OzMXfywSdo2kPPWwGw56FeCL0Iquizsy8Z87Cjskb/x0N34InX
+lJFvlxR6JPkXgFEKC2MpjFVr5XCG/ovYIqsMrKI2/S48ogDt8xEu+vUV4K/V
+rs8smIfzmqnRORfvg4o44nqLvwwiKmgzcwa1kLR9IbVvUQ41ntQNhuE8UE2I
+T5++OQ+UjmlzRU4uVAZrM59bfoSPNEP+pAcH/hyt2kL1JqFcN7bKw5Zy6Ons
+36slICOe88/piR61YMd8azdjS0aXqureci8LgUfLbb7gREaiWufI/Mwy4DZs
+O/S0dAUS3h60CA1pge4OjaPkaA108CxrT2JzHezqFXfTH2ji/1GGttmSWacU
+7xclwZdSjy3JsPmPhgxztyuw/zBxLO8LWt5PnmyfdGdJpdheh9OHvazk2EPR
+O8OMTiqwQ/Jfk8aKlvcf38ZMHaqNArvNLTjwSfE8MG2s62+6VcNg1G2fpP1a
+6BzP5sGjgibo4An8Mzu00KSfZE3FvBAk1B5Fg4SMVE1/skxZnwVLwYuH7bbJ
+oLMjtdFwTT2k58XeLdOgIAjXCm2PaALu6KnVQ4+0EZUnapxLqoGZksczRrEy
+sFrafIysIwSBIzdAf6M60t3XNCVe2QrDB3Y5yN5oov8ARCh0EQ==
+          "], {{{}, {
+             EdgeForm[], 
+             RGBColor[
+             0.4120457437048757, 0.4793379899786533, 0.7256864449646855], 
+             GraphicsGroupBox[{
+               PolygonBox[{{113, 32, 81}, {89, 34, 116}}], 
+               
+               PolygonBox[{{100, 27, 33, 85}, {104, 28, 34, 89}, {85, 33, 28, 
+                104}, {81, 32, 27, 100}}]}]}, {
+             EdgeForm[], 
+             RGBColor[
+             0.6663692995151689, 0.571994137865254, 0.5178428509146672], 
+             GraphicsGroupBox[{
+               
+               PolygonBox[{{92, 1, 40}, {54, 10, 62}, {5, 30, 10}, {62, 10, 
+                96}, {44, 5, 51}}], 
+               
+               PolygonBox[{{108, 29, 5, 44}, {82, 81, 100, 101}, {86, 85, 104,
+                 105}, {101, 100, 85, 86}, {96, 10, 39, 112}, {105, 104, 89, 
+                90}, {51, 5, 10, 54}}], 
+               PolygonBox[{{90, 89, 116, 29, 108}}], 
+               PolygonBox[{{40, 1, 38, 113, 81, 82}}]}]}, {
+             EdgeForm[], 
+             RGBColor[
+             0.9206928553254612, 0.6646502857518546, 0.3099992568646495], 
+             GraphicsGroupBox[{
+               
+               PolygonBox[{{65, 16, 75}, {97, 17, 69}, {93, 6, 48}, {48, 6, 
+                46}, {69, 17, 66}, {110, 22, 78}, {112, 16, 96}}], 
+               
+               PolygonBox[{{56, 11, 6, 93}, {91, 90, 108, 109}, {66, 17, 11, 
+                56}, {109, 108, 44, 45}, {41, 40, 82, 83}, {102, 101, 86, 
+                87}, {106, 105, 90, 91}, {45, 44, 51, 52}, {87, 86, 105, 
+                106}, {52, 51, 54, 55}, {83, 82, 101, 102}, {78, 22, 17, 
+                97}, {55, 54, 62, 63}}], 
+               PolygonBox[{{46, 6, 92, 40, 41}, {63, 62, 96, 16, 65}}]}]}, {
+             EdgeForm[], 
+             RGBColor[
+             0.9804795401190189, 0.7436312935631144, 0.4020232456459445], 
+             GraphicsGroupBox[{
+               
+               PolygonBox[{{65, 15, 63}, {43, 4, 50}, {76, 21, 117}, {80, 23, 
+                77}, {53, 9, 60}, {97, 23, 78}, {109, 4, 91}, {64, 15, 73}, {
+                45, 4, 109}, {55, 9, 52}, {99, 23, 80}}], 
+               
+               PolygonBox[{{114, 31, 23, 99}, {67, 66, 56, 57}, {103, 102, 87,
+                 88}, {70, 69, 66, 67}, {75, 21, 15, 65}, {52, 9, 4, 45}, {47,
+                 46, 41, 42}, {73, 15, 21, 76}, {88, 87, 106, 107}, {94, 93, 
+                48, 49}, {57, 56, 93, 94}, {60, 9, 15, 64}, {42, 41, 83, 
+                84}, {49, 48, 46, 47}, {63, 15, 9, 55}, {50, 4, 9, 53}, {84, 
+                83, 102, 103}}], 
+               
+               PolygonBox[{{78, 23, 31, 36, 110}, {107, 106, 91, 4, 43}, {77, 
+                23, 97, 69, 70}}]}]}, {
+             EdgeForm[], 
+             RGBColor[
+             0.9862039553316246, 0.8188119466886719, 0.577381164992105], 
+             GraphicsGroupBox[{
+               
+               PolygonBox[{{7, 2, 3}, {76, 20, 73}, {35, 25, 20}, {107, 3, 
+                88}, {103, 2, 84}, {94, 12, 57}, {42, 2, 47}, {70, 18, 77}, {
+                72, 18, 68}, {64, 14, 60}, {43, 3, 107}, {57, 12, 67}, {84, 2,
+                 42}, {3, 8, 7}, {99, 26, 114}, {53, 8, 50}, {61, 14, 71}}], 
+               
+               PolygonBox[{{50, 8, 3, 43}, {47, 2, 7, 49}, {80, 24, 26, 99}, {
+                49, 7, 12, 94}, {74, 20, 25, 98}, {71, 14, 20, 74}, {79, 24, 
+                18, 72}, {77, 18, 24, 80}, {73, 20, 14, 64}, {111, 24, 25, 
+                118}, {68, 18, 12, 59}, {67, 12, 18, 70}, {58, 8, 14, 61}, {
+                88, 3, 2, 103}, {95, 7, 8, 58}, {98, 25, 24, 79}, {60, 14, 8, 
+                53}, {59, 12, 7, 95}, {115, 26, 24, 111}, {117, 35, 20, 
+                76}}]}]}, {
+             EdgeForm[], 
+             RGBColor[0.991, 0.8818, 0.7243], 
+             GraphicsGroupBox[{
+               
+               PolygonBox[{{79, 19, 98}, {72, 19, 79}, {58, 13, 95}, {111, 37,
+                 115}, {118, 37, 111}, {98, 19, 74}, {95, 13, 59}, {59, 13, 
+                68}, {74, 19, 71}, {61, 13, 58}}], 
+               PolygonBox[{{71, 19, 13, 61}, {68, 13, 19, 72}}]}]}}, {{}, 
+            TagBox[
+             TooltipBox[{
+               Directive[
+                CapForm["Butt"], 
+                GrayLevel[0], 
+                Opacity[0.5], 
+                Dashing[{Small, Small}]], 
+               LineBox[{115, 111, 118}], 
+               LineBox[{95, 58, 61, 71, 74, 98, 79, 72, 68, 59, 95}]}, 
+              "0.7`"], Annotation[#, 0.7, "Tooltip"]& ], 
+            TagBox[
+             TooltipBox[{
+               Directive[
+                CapForm["Butt"], 
+                GrayLevel[0], 
+                Opacity[0.5], 
+                Dashing[{Small, Small}]], 
+               
+               LineBox[{114, 99, 80, 77, 70, 67, 57, 94, 49, 47, 42, 84, 103, 
+                88, 107, 43, 50, 53, 60, 64, 73, 76, 117}]}, "0.65`"], 
+             Annotation[#, 0.65, "Tooltip"]& ], 
+            TagBox[
+             TooltipBox[{
+               Directive[
+                CapForm["Butt"], 
+                GrayLevel[0], 
+                Opacity[0.5], 
+                Dashing[{Small, Small}]], 
+               
+               LineBox[{75, 65, 63, 55, 52, 45, 109, 91, 106, 87, 102, 83, 41,
+                 46, 48, 93, 56, 66, 69, 97, 78, 110}]}, "0.6`"], 
+             Annotation[#, 0.6, "Tooltip"]& ], 
+            TagBox[
+             TooltipBox[{
+               Directive[
+                CapForm["Butt"], 
+                GrayLevel[0], 
+                Opacity[0.5], 
+                Dashing[{Small, Small}]], 
+               
+               LineBox[{92, 40, 82, 101, 86, 105, 90, 108, 44, 51, 54, 62, 96,
+                 112}]}, "0.55`"], Annotation[#, 0.55, "Tooltip"]& ], 
+            TagBox[
+             TooltipBox[{
+               Directive[
+                CapForm["Butt"], 
+                GrayLevel[0], 
+                Opacity[0.5], 
+                Dashing[{Small, Small}]], 
+               LineBox[{113, 81, 100, 85, 104, 89, 116}]}, "0.5`"], 
+             Annotation[#, 0.5, "Tooltip"]& ], {}, {}, {}}}]}, {{}, {{{}, {}, 
+           TagBox[
+            TooltipBox[{
+              Hue[0.67, 0.6, 0.6], 
+              Directive[
+               PointSize[
+                NCache[
+                 Rational[1, 60], 0.016666666666666666`]], 
+               AbsoluteThickness[1.6], FontSize -> 12, 
+               RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+              
+              LineBox[{{0.013448, 1.28321381454}, {0.017847, 1.28052415206}, {
+               0.02227, 1.2701175979}, {0.026732, 1.25216101255}, {0.031247, 
+               1.22845998515}, {0.035741, 1.19740403356}, {0.040163, 
+               1.16381605155}, {0.044871, 1.12141906738}}]}, 
+             "\"91100[rpm]=210.034[m/s]\"", LabelStyle -> "TextStyling"], 
+            Annotation[#, "91100[rpm]=210.034[m/s]", "Tooltip"]& ], 
+           TagBox[
+            TooltipBox[{
+              Hue[0.9060679774997897, 0.6, 0.6], 
+              Directive[
+               PointSize[
+                NCache[
+                 Rational[1, 60], 0.016666666666666666`]], 
+               AbsoluteThickness[1.6], FontSize -> 12, 
+               RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+              
+              LineBox[{{0.020562, 1.53197009006}, {0.026142, 1.52514984208}, {
+               0.031798, 1.50689960418}, {0.037555, 1.47745658181}, {0.0432, 
+               1.43705003447}, {0.048823, 1.38871347105}, {0.054611, 
+               1.32883393663}, {0.059725, 1.26466787321}}]}, 
+             "\"121478[rpm]=279.913[m/s]\"", LabelStyle -> "TextStyling"], 
+            Annotation[#, "121478[rpm]=279.913[m/s]", "Tooltip"]& ], 
+           TagBox[
+            TooltipBox[{
+              Hue[0.1421359549995791, 0.6, 0.6], 
+              Directive[
+               PointSize[
+                NCache[
+                 Rational[1, 60], 0.016666666666666666`]], 
+               AbsoluteThickness[1.6], FontSize -> 12, 
+               RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+              
+              LineBox[{{0.027014, 1.82611228996}, {0.034088, 1.81105465163}, {
+               0.041319, 1.7847907716}, {0.04856, 1.742109666}, {0.055889, 
+               1.68793252774}, {0.062982, 1.62043266615}, {0.07043, 
+               1.52012529749}, {0.077399, 1.39317542725}}]}, 
+             "\"147449[rpm]=339.441[m/s]\"", LabelStyle -> "TextStyling"], 
+            Annotation[#, "147449[rpm]=339.441[m/s]", "Tooltip"]& ], 
+           TagBox[
+            TooltipBox[{
+              Hue[0.37820393249936934`, 0.6, 0.6], 
+              Directive[
+               PointSize[
+                NCache[
+                 Rational[1, 60], 0.016666666666666666`]], 
+               AbsoluteThickness[1.6], FontSize -> 12, 
+               RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+              
+              LineBox[{{0.033091, 2.13351061744}, {0.041639, 2.12099216855}, {
+               0.050248, 2.09084029533}, {0.058788, 2.03577465872}, {0.06745, 
+               1.98433863261}, {0.075869, 1.89614597232}, {0.084716, 
+               1.74336183227}, {0.092983, 1.53479699627}}]}, 
+             "\"169077[rpm]=390.042[m/s]\"", LabelStyle -> "TextStyling"], 
+            Annotation[#, "169077[rpm]=390.042[m/s]", "Tooltip"]& ], 
+           TagBox[
+            TooltipBox[{
+              Hue[0.6142719099991583, 0.6, 0.6], 
+              Directive[
+               PointSize[
+                NCache[
+                 Rational[1, 60], 0.016666666666666666`]], 
+               AbsoluteThickness[1.6], FontSize -> 12, 
+               RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+              
+              LineBox[{{0.037644, 2.41639447219}, {0.04729, 2.4152183024}, {
+               0.056916, 2.38615482264}, {0.066732, 2.3285230044}, {0.076297, 
+               2.28876984305}, {0.086195, 2.18489998173}, {0.096131, 
+               1.98957546645}, {0.105737, 1.67660635425}}]}, 
+             "\"186430[rpm]=430.445[m/s]\"", LabelStyle -> "TextStyling"], 
+            Annotation[#, "186430[rpm]=430.445[m/s]", "Tooltip"]& ], 
+           TagBox[
+            TooltipBox[{
+              Hue[0.8503398874989481, 0.6, 0.6], 
+              Directive[
+               PointSize[
+                NCache[
+                 Rational[1, 60], 0.016666666666666666`]], 
+               AbsoluteThickness[1.6], FontSize -> 12, 
+               RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+              LineBox[{{0.045929, 2.73822578648}, {0.055868, 2.74742406206}, {
+               0.066017, 2.7006376812}, {0.076099, 2.67094702645}, {0.086246, 
+               2.65542213131}, {0.096395, 2.53414998406}, {0.106665, 
+               2.30306725604}, {0.116968, 1.84993612478}}]}, 
+             "\"203752[rpm]=470.18[m/s]\"", LabelStyle -> "TextStyling"], 
+            Annotation[#, "203752[rpm]=470.18[m/s]", "Tooltip"]& ], 
+           TagBox[
+            TooltipBox[{
+              Hue[0.08640786499873876, 0.6, 0.6], 
+              Directive[
+               PointSize[
+                NCache[
+                 Rational[1, 60], 0.016666666666666666`]], 
+               AbsoluteThickness[1.6], FontSize -> 12, 
+               RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+              
+              LineBox[{{0.054436, 3.0804860681}, {0.065132, 3.08007391443}, {
+               0.075064, 3.0536727636}, {0.085571, 3.06158874626}, {0.095996, 
+               3.05724330064}, {0.106295, 2.94419361695}, {0.116961, 
+               2.66206477576}, {0.127605, 2.04604883357}}]}, 
+             "\"221108[rpm]=509.785[m/s]\"", LabelStyle -> "TextStyling"], 
+            Annotation[#, "221108[rpm]=509.785[m/s]", "Tooltip"]& ], 
+           TagBox[
+            TooltipBox[{
+              Hue[0.3224758424985268, 0.6, 0.6], 
+              Directive[
+               PointSize[
+                NCache[
+                 Rational[1, 60], 0.016666666666666666`]], 
+               AbsoluteThickness[1.6], FontSize -> 12, 
+               RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+              
+              LineBox[{{0.058337, 3.35324896571}, {0.069399, 3.32930716764}, {
+               0.079232, 3.35492753779}, {0.090026, 3.38273105097}, {0.100972,
+                3.40761702974}, {0.111336, 3.30377210072}, {0.122334, 
+               3.00184982234}, {0.133203, 2.22790471541}}]}, 
+             "\"233980[rpm]=539.444[m/s]\"", LabelStyle -> "TextStyling"], 
+            Annotation[#, "233980[rpm]=539.444[m/s]", "Tooltip"]& ], {
+            Hue[0.5585438199983166, 0.6, 0.6], 
+            Directive[
+             PointSize[
+              NCache[
+               Rational[1, 60], 0.016666666666666666`]], 
+             AbsoluteThickness[1.6], FontSize -> 12, 
+             Dashing[{Small, Small}], 
+             RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+            
+            LineBox[{{0.013448, 1.28321381454}, {0.020562, 1.53197009006}, {
+             0.027014, 1.82611228996}, {0.033091, 2.13351061744}, {0.037644, 
+             2.41639447219}, {0.045929, 2.73822578648}, {0.054436, 
+             3.0804860681}, {0.058337, 
+             3.35324896571}}]}}}, {}, {}, {}, {}}}, {{}, {{{}, {}, {
+           Hue[0.67, 0.6, 0.6], 
+           Directive[
+            PointSize[
+             NCache[
+              Rational[7, 360], 0.019444444444444445`]], 
+            AbsoluteThickness[1.6], 
+            GrayLevel[0], 
+            Thickness[Large]], 
+           
+           LineBox[{{0.03915896324185227, 1.587160314803798}, {
+            0.05705110742227582, 2.0208261952455064`}}]}}, {{
+           Directive[
+            PointSize[
+             NCache[
+              Rational[7, 360], 0.019444444444444445`]], 
+            AbsoluteThickness[1.6], 
+            GrayLevel[0], 
+            Thickness[Large], 
+            AbsolutePointSize[6]], 
+           GeometricTransformationBox[
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+               "\"\[FilledCircle]\"", FontSize -> 10, StripOnInput -> False], 
+               TraditionalForm]], {0., 0.}], {{{0.03915896324185227, 
+            1.587160314803798}}, {{0.05705110742227582, 
+            2.0208261952455064`}}}]}, {}}}, {}, {}, {}, {}}}, {
+      PlotRange -> All, ImageSize -> 380, DisplayFunction -> Identity, 
+       AspectRatio -> 1, AxesOrigin -> {Automatic, Automatic}, 
+       BaseStyle -> {FontSize -> 12, Bold}, DisplayFunction :> Identity, 
+       Frame -> True, FrameLabel -> {{
+          FormBox["\"p2p1\"", TraditionalForm], None}, {
+          FormBox[
+          "\"Vred [\\!\\(\\*SuperscriptBox[\\(m\\), \\(3\\)]\\)/s]\"", 
+           TraditionalForm], None}}, FrameStyle -> Automatic, 
+       FrameTicks -> {{Charting`FindScaledTicks[
+           (Charting`SimpleTicks[#, #2, 6]& )[
+            SlotSequence[1]], {Identity, Identity}]& , None}, {
+         Charting`FindScaledTicks[
+           (Charting`SimpleTicks[#, #2, 6]& )[
+            SlotSequence[1]], {Identity, Identity}]& , None}}, 
+       GridLines -> {{0.02, 0.04, 0.06, 0.08, 0.1, 0.12}, {1.5, 2., 2.5, 3.}},
+        GridLinesStyle -> Directive[
+         GrayLevel[0.5, 0.4]], 
+       Method -> {
+        "DefaultBoundaryStyle" -> Automatic, "GridLinesInFront" -> True}, 
+       PlotLabel -> 
+       FormBox["\"Compressor Map \\!\\(\\*SubscriptBox[\\(V\\), \
+\\(red\\)]\\)-PI\"", TraditionalForm], 
+       PlotRange -> {{0.013448, 0.133203}, {1.11852189895, 3.40064267357}}, 
+       PlotRangeClipping -> True, PlotRangePadding -> {{
+          Scaled[0.02], 
+          Scaled[0.02]}, {
+          Scaled[0.02], 
+          Scaled[0.02]}}, Ticks -> {Charting`FindScaledTicks[
+          (Charting`SimpleTicks[#, #2, 6]& )[
+           SlotSequence[1]], {Identity, Identity}]& , Charting`FindScaledTicks[
+          (Charting`SimpleTicks[#, #2, 6]& )[
+           SlotSequence[1]], {Identity, Identity}]& }}],FormBox[
+      FormBox[
+       TagBox[
+        GridBox[{{
+           StyleBox["\"eb63_1.5t_gwm_001_ccm_20180626\"", 
+            RGBColor[0.24720000000000014`, 0.24, 0.6], StripOnInput -> 
+            False]}, {
+           StyleBox["\"d2: 44 mm\"", {
+             Dashing[{Small, Small}], 
+             RGBColor[0.24720000000000014`, 0.24, 0.6]}, StripOnInput -> 
+            False]}}, GridBoxAlignment -> {"Columns" -> {{Left}}}, 
+         DefaultBaseStyle -> "Column", 
+         GridBoxItemSize -> {
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"], 
+       TraditionalForm], TraditionalForm]},
+    "Legended",
+    DisplayFunction->(GridBox[{{
+        TagBox[
+         ItemBox[
+          PaneBox[
+           TagBox[#, "SkipImageSizeLevel"], Alignment -> {Center, Baseline}, 
+           BaselinePosition -> Baseline], DefaultBaseStyle -> "Labeled"], 
+         "SkipImageSizeLevel"]}, {
+        ItemBox[#2, DefaultBaseStyle -> "LabeledLabel"]}}, 
+      GridBoxAlignment -> {"Columns" -> {{Center}}, "Rows" -> {{Center}}}, 
+      AutoDelete -> False, GridBoxItemSize -> Automatic, 
+      BaselinePosition -> {1, 1}]& ),
+    Editable->True,
+    InterpretationFunction->(RowBox[{"Legended", "[", 
+       RowBox[{#, ",", 
+         RowBox[{"Placed", "[", 
+           RowBox[{#2, ",", "Below"}], "]"}]}], "]"}]& )], ",", 
+   GraphicsBox[{{{}, {{}, {}, 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{0.013448, 0.510889}, {0.017847, 0.547548}, {0.02227, 
+            0.593143}, {0.026732, 0.611628}, {0.031247, 0.612589}, {0.035741, 
+            0.592763}, {0.040163, 0.541002}, {0.044871, 0.442653}}],
+           FontSize->12]},
+         "\"91100[rpm]=210.034[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "91100[rpm]=210.034[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{0.020562, 0.581919}, {0.026142, 0.635688}, {0.031798, 
+            0.67321}, {0.037555, 0.686275}, {0.0432, 0.68952}, {0.048823, 
+            0.674676}, {0.054611, 0.626246}, {0.059725, 0.552032}}],
+           FontSize->12]},
+         "\"121478[rpm]=279.913[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "121478[rpm]=279.913[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          StyleBox[
+           LineBox[{{0.027014, 0.592168}, {0.034088, 0.652148}, {0.041319, 
+            0.691039}, {0.04856, 0.705235}, {0.055889, 0.71256}, {0.062982, 
+            0.706847}, {0.07043, 0.65427}, {0.077399, 0.553783}}],
+           FontSize->12]},
+         "\"147449[rpm]=339.441[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "147449[rpm]=339.441[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{0.033091, 0.601157}, {0.041639, 0.656378}, {0.050248, 
+            0.69132}, {0.058788, 0.709915}, {0.06745, 0.725184}, {0.075869, 
+            0.721606}, {0.084716, 0.669509}, {0.092983, 0.551586}}],
+           FontSize->12]},
+         "\"169077[rpm]=390.042[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "169077[rpm]=390.042[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{0.037644, 0.593696}, {0.04729, 0.645442}, {0.056916, 
+            0.682301}, {0.066732, 0.706068}, {0.076297, 0.727562}, {0.086195, 
+            0.729992}, {0.096131, 0.681522}, {0.105737, 0.550456}}],
+           FontSize->12]},
+         "\"186430[rpm]=430.445[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "186430[rpm]=430.445[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{0.045929, 0.598976}, {0.055868, 0.645506}, {0.066017, 
+            0.673185}, {0.076099, 0.702277}, {0.086246, 0.725723}, {0.096395, 
+            0.728536}, {0.106665, 0.693608}, {0.116968, 0.551097}}],
+           FontSize->12]},
+         "\"203752[rpm]=470.18[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "203752[rpm]=470.18[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{0.054436, 0.598324}, {0.065132, 0.633617}, {0.075064, 
+            0.662383}, {0.085571, 0.692146}, {0.095996, 0.716223}, {0.106295, 
+            0.722714}, {0.116961, 0.692173}, {0.127605, 0.548592}}],
+           FontSize->12]},
+         "\"221108[rpm]=509.785[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "221108[rpm]=509.785[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{0.058337, 0.583849}, {0.069399, 0.614405}, {0.079232, 
+            0.643571}, {0.090026, 0.676764}, {0.100972, 0.703384}, {0.111336, 
+            0.715227}, {0.122334, 0.695754}, {0.133203, 0.549133}}],
+           FontSize->12]},
+         "\"233980[rpm]=539.444[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "233980[rpm]=539.444[m/s]", 
+         "Tooltip"]& ]}, {}, {}, {}, {}}, {{}, {{{}, {}, 
+        {GrayLevel[0], PointSize[
+          NCache[
+           Rational[7, 360], 0.019444444444444445`]], Thickness[Large], 
+         LineBox[{{0.03915896324185227, 0.6994015654246737}, {
+          0.05705110742227582, 0.7077770099586611}}]}}, {
+        {GrayLevel[0], AbsolutePointSize[6], Thickness[Large], 
+         GeometricTransformationBox[InsetBox[
+           StyleBox["\<\"\[FilledCircle]\"\>",
+            StripOnInput->False,
+            FontSize->10], {0., 0.}], {{{0.03915896324185227, 
+          0.6994015654246737}}, {{0.05705110742227582, 
+          0.7077770099586611}}}]}, {}}}, {}, {}, {}, {}}},
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{
+      FormBox["\"Vred\"", TraditionalForm], 
+      FormBox[
+      "\"\\!\\(\\*SubscriptBox[\\(\[Eta]\\), \\(c\\)]\\)\"", TraditionalForm]},
+    AxesOrigin->{0.011576828125, 0.4282860500000001},
+    BaseStyle->{FontSize -> 12, Bold},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{Automatic, Automatic},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    ImageSize->400,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Identity[#]& )[
+           Part[#, 1]], 
+          (Identity[#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Identity[#]& )[
+           Part[#, 1]], 
+          (Identity[#]& )[
+           Part[#, 2]]}& )}},
+    PlotLabel->FormBox[
+     "\"Compressor Map \\!\\(\\*SubscriptBox[\\(V\\), \
+\\(red\\)]\\)-\\!\\(\\*SubscriptBox[\\(\[Eta]\\), \\(c\\)]\\)\"", 
+      TraditionalForm],
+    PlotRange->All,
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.05], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}]}], "}"}]], "Output",
+ CellChangeTimes->{3.7451236533961315`*^9, 3.7451237469394817`*^9, 
+  3.7451237848336487`*^9, 3.745124834900709*^9},
+ CellLabel->
+  "Out[207]=",ExpressionUUID->"9daab005-d183-42c1-bd2e-4d515d0b148c"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"matchingTurbine", "[", 
+  RowBox[{"tt", ",", 
+   RowBox[{"mapList", "[", 
+    RowBox[{"[", "6", "]"}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.7451238807711363`*^9, 3.745123905347542*^9}},
+ CellLabel->
+  "In[208]:=",ExpressionUUID->"d001efce-459d-46b1-b8d3-bbb6ba040b44"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   TemplateBox[{GraphicsBox[{{{}, {{{}, {}, 
+          TagBox[
+           TooltipBox[{
+             Hue[0.67, 0.6, 0.6], 
+             Directive[
+              PointSize[
+               NCache[
+                Rational[1, 60], 0.016666666666666666`]], 
+              AbsoluteThickness[1.6], FontSize -> 12, 
+              RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+             
+             LineBox[{{1.23530898225, 0.549848}, {1.25389352739, 0.570929}, {
+              1.26413435087, 0.580303}, {1.27576259504, 0.591244}, {
+              1.28684164302, 0.600742}, {1.29111332522, 0.604075}, {
+              1.2945946932, 0.609607}, {1.29562550541, 0.60995}}]}, 
+            "\"91100[rpm]=190[m/s]\"", LabelStyle -> "TextStyling"], 
+           Annotation[#, "91100[rpm]=190[m/s]", "Tooltip"]& ], 
+          TagBox[
+           TooltipBox[{
+             Hue[0.9060679774997897, 0.6, 0.6], 
+             Directive[
+              PointSize[
+               NCache[
+                Rational[1, 60], 0.016666666666666666`]], 
+              AbsoluteThickness[1.6], FontSize -> 12, 
+              RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+             
+             LineBox[{{1.42075716459, 0.671393}, {1.44213281958, 0.685658}, {
+              1.46544517949, 0.69725}, {1.48845719151, 0.713422}, {
+              1.50466405025, 0.721818}, {1.51579631123, 0.727951}, {
+              1.52236913117, 0.730834}, {1.52486453065, 0.732619}}]}, 
+            "\"121478[rpm]=253[m/s]\"", LabelStyle -> "TextStyling"], 
+           Annotation[#, "121478[rpm]=253[m/s]", "Tooltip"]& ], 
+          TagBox[
+           TooltipBox[{
+             Hue[0.1421359549995791, 0.6, 0.6], 
+             Directive[
+              PointSize[
+               NCache[
+                Rational[1, 60], 0.016666666666666666`]], 
+              AbsoluteThickness[1.6], FontSize -> 12, 
+              RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+             
+             LineBox[{{1.63050898549, 0.757439}, {1.66492211344, 0.770773}, {
+              1.70597107029, 0.785266}, {1.74401166894, 0.79833}, {
+              1.7725188819, 0.804178}, {1.79226284465, 0.811127}, {
+              1.80228460726, 0.815381}, {1.80513631467, 0.816664}}]}, 
+            "\"147449[rpm]=307[m/s]\"", LabelStyle -> "TextStyling"], 
+           Annotation[#, "147449[rpm]=307[m/s]", "Tooltip"]& ], 
+          TagBox[
+           TooltipBox[{
+             Hue[0.37820393249936934`, 0.6, 0.6], 
+             Directive[
+              PointSize[
+               NCache[
+                Rational[1, 60], 0.016666666666666666`]], 
+              AbsoluteThickness[1.6], FontSize -> 12, 
+              RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+             
+             LineBox[{{1.85162138733, 0.803913}, {1.91302206562, 0.81851}, {
+              1.97555059628, 0.8346}, {2.02748424524, 0.844357}, {
+              2.07368990078, 0.853139}, {2.10455888558, 0.85862}, {
+              2.12033055847, 0.860084}, {2.11620864324, 0.857119}}]}, 
+            "\"169077[rpm]=352[m/s]\"", LabelStyle -> "TextStyling"], 
+           Annotation[#, "169077[rpm]=352[m/s]", "Tooltip"]& ], 
+          TagBox[
+           TooltipBox[{
+             Hue[0.6142719099991583, 0.6, 0.6], 
+             Directive[
+              PointSize[
+               NCache[
+                Rational[1, 60], 0.016666666666666666`]], 
+              AbsoluteThickness[1.6], FontSize -> 12, 
+              RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+             
+             LineBox[{{2.06887302111, 0.833747}, {2.15249939902, 0.84784}, {
+              2.23724586094, 0.860049}, {2.30570088896, 0.867675}, {
+              2.37378176703, 0.874013}, {2.42125148568, 0.880127}, {
+              2.44763359184, 0.880872}, {2.42624680066, 0.87891}}]}, 
+            "\"186430[rpm]=389[m/s]\"", LabelStyle -> "TextStyling"], 
+           Annotation[#, "186430[rpm]=389[m/s]", "Tooltip"]& ], 
+          TagBox[
+           TooltipBox[{
+             Hue[0.8503398874989481, 0.6, 0.6], 
+             Directive[
+              PointSize[
+               NCache[
+                Rational[1, 60], 0.016666666666666666`]], 
+              AbsoluteThickness[1.6], FontSize -> 12, 
+              RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+             
+             LineBox[{{2.36431762896, 0.859204}, {2.46857581863, 0.86896}, {
+              2.56880039913, 0.874267}, {2.66360883691, 0.881979}, {
+              2.76054916385, 0.886525}, {2.81554014075, 0.889884}, {
+              2.8399708166, 0.88996}, {2.79462321484, 0.889387}}]}, 
+            "\"203752[rpm]=425[m/s]\"", LabelStyle -> "TextStyling"], 
+           Annotation[#, "203752[rpm]=425[m/s]", "Tooltip"]& ], 
+          TagBox[
+           TooltipBox[{
+             Hue[0.08640786499873876, 0.6, 0.6], 
+             Directive[
+              PointSize[
+               NCache[
+                Rational[1, 60], 0.016666666666666666`]], 
+              AbsoluteThickness[1.6], FontSize -> 12, 
+              RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+             
+             LineBox[{{2.72646008717, 0.872237}, {2.86588110443, 0.880476}, {
+              2.97802192525, 0.883728}, {3.10650343715, 0.891055}, {
+              3.23215208386, 0.892201}, {3.30928313257, 0.896253}, {
+              3.3346095803, 0.897064}, {3.25505417791, 0.894931}}]}, 
+            "\"221108[rpm]=460[m/s]\"", LabelStyle -> "TextStyling"], 
+           Annotation[#, "221108[rpm]=460[m/s]", "Tooltip"]& ], 
+          TagBox[
+           TooltipBox[{
+             Hue[0.3224758424985268, 0.6, 0.6], 
+             Directive[
+              PointSize[
+               NCache[
+                Rational[1, 60], 0.016666666666666666`]], 
+              AbsoluteThickness[1.6], FontSize -> 12, 
+              RGBColor[0.24720000000000014`, 0.24, 0.6]], 
+             
+             LineBox[{{3.01194900172, 0.87658}, {3.16846487766, 0.882729}, {
+              3.31865510288, 0.888521}, {3.47404741658, 0.892731}, {
+              3.64275467543, 0.897362}, {3.73990381875, 0.900979}, {
+              3.78615917851, 0.901241}, {3.65287426368, 0.896795}}]}, 
+            "\"233980[rpm]=488[m/s]\"", LabelStyle -> "TextStyling"], 
+           Annotation[#, "233980[rpm]=488[m/s]", 
+            "Tooltip"]& ]}}, {}, {}, {}, {}}, {{}, {{{}, {}, {
+           Hue[0.67, 0.6, 0.6], 
+           Directive[
+            PointSize[
+             NCache[
+              Rational[7, 360], 0.019444444444444445`]], 
+            AbsoluteThickness[1.6], 
+            GrayLevel[0], 
+            Thickness[Large]], 
+           
+           LineBox[{{1.3282528597462773`, 1.162204814961823}, {
+            1.619070797729338, 1.250181285829918}}]}}, {{
+           Directive[
+            PointSize[
+             NCache[
+              Rational[7, 360], 0.019444444444444445`]], 
+            AbsoluteThickness[1.6], 
+            GrayLevel[0], 
+            Thickness[Large], 
+            AbsolutePointSize[6]], 
+           GeometricTransformationBox[
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+               "\"\[FilledCircle]\"", FontSize -> 10, StripOnInput -> False], 
+               TraditionalForm]], {0., 0.}], {{{1.3282528597462773`, 
+            1.162204814961823}}, {{1.619070797729338, 
+            1.250181285829918}}}]}, {}}}, {}, {}, {}, {}}}, {
+      PlotRange -> All, DisplayFunction -> Identity, PlotRangePadding -> {{
+          Scaled[0.02], 
+          Scaled[0.02]}, {
+          Scaled[0.05], 
+          Scaled[0.05]}}, 
+       AxesOrigin -> {1.1954519479334376`, 0.5322783500000001}, 
+       PlotRange -> {{1.23530898225, 3.78615917851}, {0.549848, 0.901241}}, 
+       PlotRangeClipping -> True, ImagePadding -> All, DisplayFunction -> 
+       Identity, AspectRatio -> NCache[GoldenRatio^(-1), 0.6180339887498948], 
+       Axes -> {True, True}, AxesLabel -> {
+         FormBox["\"p3/p4\"", TraditionalForm], 
+         FormBox["\"MFP\"", TraditionalForm]}, 
+       AxesOrigin -> {1.1954519479334376`, 0.5322783500000001}, 
+       BaseStyle -> {FontSize -> 12, Bold}, DisplayFunction :> Identity, 
+       Frame -> {{False, False}, {False, False}}, 
+       FrameLabel -> {{None, None}, {None, None}}, 
+       FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, 
+       GridLines -> {Automatic, Automatic}, GridLinesStyle -> Directive[
+         GrayLevel[0.5, 0.4]], ImageSize -> Medium, 
+       Method -> {"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+             (Identity[#]& )[
+              Part[#, 1]], 
+             (Identity[#]& )[
+              Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+             (Identity[#]& )[
+              Part[#, 1]], 
+             (Identity[#]& )[
+              Part[#, 2]]}& )}}, PlotLabel -> 
+       FormBox["\"Turbine Map PI-MFP\"", TraditionalForm], 
+       PlotRange -> {{1.23530898225, 3.78615917851}, {0.549848, 0.901241}}, 
+       PlotRangeClipping -> True, PlotRangePadding -> {{
+          Scaled[0.02], 
+          Scaled[0.02]}, {
+          Scaled[0.05], 
+          Scaled[0.05]}}, Ticks -> {Automatic, Automatic}}],FormBox[
+      FormBox[
+       TagBox[
+        GridBox[{{
+           StyleBox["\"eb63_1.5t_gwm_001_ccm_20180626|d5: 39.8 mm\"", 
+            RGBColor[0.24720000000000014`, 0.24, 0.6], StripOnInput -> 
+            False]}}, GridBoxAlignment -> {"Columns" -> {{Left}}}, 
+         DefaultBaseStyle -> "Column", 
+         GridBoxItemSize -> {
+          "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}], "Column"], 
+       TraditionalForm], TraditionalForm]},
+    "Legended",
+    DisplayFunction->(GridBox[{{
+        TagBox[
+         ItemBox[
+          PaneBox[
+           TagBox[#, "SkipImageSizeLevel"], Alignment -> {Center, Baseline}, 
+           BaselinePosition -> Baseline], DefaultBaseStyle -> "Labeled"], 
+         "SkipImageSizeLevel"]}, {
+        ItemBox[#2, DefaultBaseStyle -> "LabeledLabel"]}}, 
+      GridBoxAlignment -> {"Columns" -> {{Center}}, "Rows" -> {{Center}}}, 
+      AutoDelete -> False, GridBoxItemSize -> Automatic, 
+      BaselinePosition -> {1, 1}]& ),
+    Editable->True,
+    InterpretationFunction->(RowBox[{"Legended", "[", 
+       RowBox[{#, ",", 
+         RowBox[{"Placed", "[", 
+           RowBox[{#2, ",", "Below"}], "]"}]}], "]"}]& )], ",", 
+   GraphicsBox[{{{}, {{}, {}, 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{1.23530898225, 0.55901}, {1.25389352739, 0.608473}, {
+            1.26413435087, 0.637745}, {1.27576259504, 0.651906}, {
+            1.28684164302, 0.654879}, {1.29111332522, 0.660492}, {
+            1.2945946932, 0.666169}, {1.29562550541, 0.67961}}],
+           FontSize->12]},
+         "\"91100[rpm]=190[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "91100[rpm]=190[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{1.42075716459, 0.572546}, {1.44213281958, 0.60962}, {
+            1.46544517949, 0.630196}, {1.48845719151, 0.641129}, {
+            1.50466405025, 0.646249}, {1.51579631123, 0.649601}, {
+            1.52236913117, 0.659592}, {1.52486453065, 0.664925}}],
+           FontSize->12]},
+         "\"121478[rpm]=253[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "121478[rpm]=253[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{1.63050898549, 0.601626}, {1.66492211344, 0.626957}, {
+            1.70597107029, 0.638774}, {1.74401166894, 0.648803}, {
+            1.7725188819, 0.657605}, {1.79226284465, 0.658019}, {
+            1.80228460726, 0.667751}, {1.80513631467, 0.671455}}],
+           FontSize->12]},
+         "\"147449[rpm]=307[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "147449[rpm]=307[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{1.85162138733, 0.622258}, {1.91302206562, 0.64231}, {
+            1.97555059628, 0.651563}, {2.02748424524, 0.661114}, {
+            2.07368990078, 0.667622}, {2.10455888558, 0.669696}, {
+            2.12033055847, 0.676245}, {2.11620864324, 0.683937}}],
+           FontSize->12]},
+         "\"169077[rpm]=352[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "169077[rpm]=352[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{2.06887302111, 0.627348}, {2.15249939902, 0.649427}, {
+            2.23724586094, 0.657391}, {2.30570088896, 0.667679}, {
+            2.37378176703, 0.672931}, {2.42125148568, 0.673457}, {
+            2.44763359184, 0.6788}, {2.42624680066, 0.6876}}],
+           FontSize->12]},
+         "\"186430[rpm]=389[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "186430[rpm]=389[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{2.36431762896, 0.63809}, {2.46857581863, 0.652119}, {
+            2.56880039913, 0.662144}, {2.66360883691, 0.663996}, {
+            2.76054916385, 0.668214}, {2.81554014075, 0.670421}, {
+            2.8399708166, 0.674009}, {2.79462321484, 0.68086}}],
+           FontSize->12]},
+         "\"203752[rpm]=425[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "203752[rpm]=425[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{2.72646008717, 0.636103}, {2.86588110443, 0.645185}, {
+            2.97802192525, 0.649708}, {3.10650343715, 0.648638}, {
+            3.23215208386, 0.64895}, {3.30928313257, 0.649225}, {3.3346095803,
+             0.652251}, {3.25505417791, 0.656025}}],
+           FontSize->12]},
+         "\"221108[rpm]=460[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "221108[rpm]=460[m/s]", "Tooltip"]& ], 
+       TagBox[
+        TooltipBox[
+         {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[
+           NCache[
+            Rational[1, 60], 0.016666666666666666`]], AbsoluteThickness[1.6], 
+          
+          StyleBox[
+           LineBox[{{3.01194900172, 0.62768}, {3.16846487766, 0.634583}, {
+            3.31865510288, 0.634527}, {3.47404741658, 0.629918}, {
+            3.64275467543, 0.622996}, {3.73990381875, 0.619869}, {
+            3.78615917851, 0.616963}, {3.65287426368, 0.630151}}],
+           FontSize->12]},
+         "\"233980[rpm]=488[m/s]\"",
+         TooltipStyle->"TextStyling"],
+        Annotation[#, "233980[rpm]=488[m/s]", 
+         "Tooltip"]& ]}, {}, {}, {}, {}}, {{}, {{{}, {}, 
+        {GrayLevel[0], PointSize[
+          NCache[
+           Rational[7, 360], 0.019444444444444445`]], Thickness[Large], 
+         LineBox[{{1.3282528597462773`, 0.65}, {1.619070797729338, 0.68}}]}}, {
+        {GrayLevel[0], AbsolutePointSize[6], Thickness[Large], 
+         GeometricTransformationBox[InsetBox[
+           StyleBox["\<\"\[FilledCircle]\"\>",
+            StripOnInput->False,
+            FontSize->10], {0., 0.}], {{{1.3282528597462773`, 0.65}}, {{
+          1.619070797729338, 0.68}}}]}, {}}}, {}, {}, {}, {}}},
+    AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+    Axes->{True, True},
+    AxesLabel->{
+      FormBox["\"p3/p4\"", TraditionalForm], 
+      FormBox[
+      "\"\\!\\(\\*SubscriptBox[\\(\[Eta]\\), \\(T\\)]\\)\"", TraditionalForm]},
+    AxesOrigin->{1.1954519479334376`, 0.5525805},
+    BaseStyle->{FontSize -> 12, Bold},
+    DisplayFunction->Identity,
+    Frame->{{False, False}, {False, False}},
+    FrameLabel->{{None, None}, {None, None}},
+    FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+    GridLines->{Automatic, Automatic},
+    GridLinesStyle->Directive[
+      GrayLevel[0.5, 0.4]],
+    ImagePadding->All,
+    ImageSize->Medium,
+    Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+          (Identity[#]& )[
+           Part[#, 1]], 
+          (Identity[#]& )[
+           Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+          (Identity[#]& )[
+           Part[#, 1]], 
+          (Identity[#]& )[
+           Part[#, 2]]}& )}},
+    PlotLabel->FormBox[
+     "\"Turbine Map PI-\\!\\(\\*SubscriptBox[\\(\[Eta]\\), \\(T\\)]\\)\"", 
+      TraditionalForm],
+    PlotRange->All,
+    PlotRangeClipping->True,
+    PlotRangePadding->{{
+       Scaled[0.02], 
+       Scaled[0.02]}, {
+       Scaled[0.05], 
+       Scaled[0.05]}},
+    Ticks->{Automatic, Automatic}]}], "}"}]], "Output",
+ CellChangeTimes->{3.7451239063215976`*^9, 3.745124837414853*^9},
+ CellLabel->
+  "Out[208]=",ExpressionUUID->"37521dae-4cf9-457a-b011-dfed8297369f"]
+}, Open  ]]
+},
+WindowSize->{775, 873},
+WindowMargins->{{Automatic, -188}, {-6, Automatic}},
+FrontEndVersion->"11.3 for Microsoft Windows (64-bit) (March 6, 2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 391, 7, 28, "Input",ExpressionUUID->"d2f14c6c-c8b2-428a-aa8b-61cb21a4d5ee"],
+Cell[952, 29, 292, 7, 28, "Input",ExpressionUUID->"2b9a2426-6ee1-4d31-8ef4-b35fd9d8ee86"],
+Cell[1247, 38, 250, 4, 28, "Input",ExpressionUUID->"bcf5ecb4-1fbb-4156-aecd-2875a0c31128"],
+Cell[CellGroupData[{
+Cell[1522, 46, 432, 10, 28, "Input",ExpressionUUID->"0c1b7db9-6747-4871-961d-2ac737ba4313"],
+Cell[1957, 58, 289, 7, 32, "Output",ExpressionUUID->"6df75034-c971-4143-9b85-f80f8430fed6"]
+}, Open  ]],
+Cell[2261, 68, 358, 9, 28, "Input",ExpressionUUID->"856e6849-ef5e-4201-a660-38b38d6007e6"],
+Cell[CellGroupData[{
+Cell[2644, 81, 411, 10, 48, "Input",ExpressionUUID->"86d85334-d8ab-4db3-8e05-b72149ec295e"],
+Cell[3058, 93, 228, 5, 32, "Output",ExpressionUUID->"ca04ffdf-2b68-44e0-8ded-1a194278d1c7"],
+Cell[3289, 100, 225, 5, 32, "Output",ExpressionUUID->"beaa7d3f-8ddb-4f4a-9c22-d3100302497d"]
+}, Open  ]],
+Cell[3529, 108, 417, 11, 28, "Input",ExpressionUUID->"fa8e1862-9708-4186-8217-4971213d42e2"],
+Cell[CellGroupData[{
+Cell[3971, 123, 306, 7, 28, "Input",ExpressionUUID->"a05fa585-c0f1-4675-aad8-a13d447ba74f"],
+Cell[4280, 132, 26324, 564, 737, "Output",ExpressionUUID->"9daab005-d183-42c1-bd2e-4d515d0b148c"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[30641, 701, 303, 7, 28, "Input",ExpressionUUID->"d001efce-459d-46b1-b8d3-bbb6ba040b44"],
+Cell[30947, 710, 17664, 394, 565, "Output",ExpressionUUID->"37521dae-4cf9-457a-b011-dfed8297369f"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
